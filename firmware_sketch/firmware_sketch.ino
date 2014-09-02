@@ -39,8 +39,14 @@ void loop(){
     readNAnalogs(analogInputs, (sizeof(analogInputs)/sizeof(analogInputs[0])), analogReads);
     
     String measurements = String("t0;t1;t2;t3;v;i;p;");
-    String t0 = doubleToString(tCel[0], PRECISION);
-    measurements.replace("t0", t0);
+    
+    for (int i = 0; i < 6; i++)
+    {
+        String temp = doubleToString(tCel[i], PRECISION);
+        String tokenTemp = "t" + String(i);
+        measurements.replace(tokenTemp, temp);
+    }
+    
     Serial.print(measurements + "\n");
     
     /*
