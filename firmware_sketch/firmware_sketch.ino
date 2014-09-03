@@ -13,6 +13,7 @@
 #define PRESSURE_ANALOG 2
 
 #define PRECISION 2
+#define V_REF 2.5
 #define V_RES 0.00488
 #define R_RATIO 0.025
 #define SEPARATOR ";"
@@ -21,6 +22,7 @@
 void read4Temps(int[], int, double[], int);
 void readNAnalogs(int[], int, int[]);
 String toStrVolts(int);
+String toStrAmpere(int);
 
 String doubleToString(double, uint8_t);
 
@@ -46,6 +48,7 @@ void loop(){
     // Sending measurements to serial port
     String measurements = String("t0;t1;t2;t3;v;i;p;");
     
+    // Tokens replacement loop
     for (int i = 0; i < 7; i++)
     {
         if (i < 4)
@@ -71,10 +74,10 @@ void loop(){
         }
     }
    
-    Serial.print(measurements + "\n");
-    //int current = 511;
-    //String strCurrent = toAmpere(current);
-    //Serial.print(strCurrent + "\n");
+    //Serial.print(measurements + "\n");
+    int current = 513;
+    String strCurrent = toStrAmpere(current);
+    Serial.print(strCurrent + "\n");
     
     /*
     // Sending to serial port
@@ -123,7 +126,11 @@ String toStrVolts(int adcOut)
 
 String toStrAmpere(int adcOut)
 {
-    
+    double vOffset = V_REF; // @ 0A +- 0.030V
+    double vOutRaw = (adcOut * V_RES) - V_REF;
+    double iOut = vOutRaw/0.015;
+    String  strI = doubleToString(iOut, PRECISION);
+    return strI;
 }
 
 String doubleToString(double number, uint8_t digits) 
