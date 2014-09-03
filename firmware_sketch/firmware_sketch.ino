@@ -20,7 +20,7 @@
 // Function prototypes
 void read4Temps(int[], int, double[], int);
 void readNAnalogs(int[], int, int[]);
-String toVolts(int);
+String toStrVolts(int);
 
 String doubleToString(double, uint8_t);
 
@@ -28,7 +28,7 @@ String doubleToString(double, uint8_t);
 int dPins[4] = {T_DO, T_D1, T_D2, T_D3};
 int analogInputs[3] = {VOLTAGE_ANALOG, CURRENT_ANALOG, PRESSURE_ANALOG};
 double tCel[4] = {0.0, 0.0, 0.0, 0.0};
-int analogReads[4] = {0, 0, 0, 0};
+int analogReads[3] = {0, 0, 0};
 
 void setup(){
 
@@ -54,16 +54,27 @@ void loop(){
             String tokenTemp = "t" + String(i);
             measurements.replace(tokenTemp, temp);
         }
-        if ((i > 3) && (i < 7))
+        
+        if ((i > 3) && (i < 5))
+        {
+            String voltage = toStrVolts(analogReads[i - 4]);
+            String tokenVolt = "v";
+            measurements.replace(tokenVolt, voltage);
+        }
+        if ((i > 4) && (i < 6))
+        {
+            
+        }
+        if (i > 5)
         {
             
         }
     }
    
-    //Serial.print(measurements + "\n");
-    int current = 511;
-    String strCurrent = toAmpere(current);
-    Serial.print(strCurrent + "\n");
+    Serial.print(measurements + "\n");
+    //int current = 511;
+    //String strCurrent = toAmpere(current);
+    //Serial.print(strCurrent + "\n");
     
     /*
     // Sending to serial port
@@ -78,8 +89,8 @@ void loop(){
         Serial.print(SEPARATOR);
     }
     Serial.println();
-    
     */
+    
     
     delay(100);
 
@@ -103,11 +114,16 @@ void readNAnalogs(int analogIns[], int inLen, int analogReads[])
         }
 }
 
-String toVolts(int adcOut)
+String toStrVolts(int adcOut)
 {
     double dVoltage = (double)adcOut * V_RES * (1/R_RATIO);
-    String voltage = doubleToString(dVoltage, PRECISION);
-    return voltage;
+    String strVoltage = doubleToString(dVoltage, PRECISION);
+    return strVoltage;
+}
+
+String toStrAmpere(int adcOut)
+{
+    
 }
 
 String doubleToString(double number, uint8_t digits) 
