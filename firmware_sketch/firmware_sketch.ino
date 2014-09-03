@@ -23,6 +23,7 @@ void read4Temps(int[], int, double[], int);
 void readNAnalogs(int[], int, int[]);
 String toStrVolts(int);
 String toStrAmpere(int);
+String toStrBar(int);
 
 String doubleToString(double, uint8_t);
 
@@ -72,31 +73,13 @@ void loop(){
         }
         if (i > 5)
         {
-            
+            String pressure = toStrBar(analogReads[i - 4]);
+            String tokenPressure = "p";
+            measurements.replace(tokenPressure, pressure);
         }
     }
    
     Serial.print(measurements + "\n");
-    //int current = 513;
-    //String strCurrent = toStrAmpere(current);
-    //Serial.print(strCurrent + "\n");
-    
-    /*
-    // Sending to serial port
-    for (int i = 0; i < 4; i++)
-    {
-        Serial.print(tCel[i], PRECISION);
-        Serial.print(SEPARATOR);
-    }
-    for (int i = 0; i < 3; i++)
-    {
-        Serial.print(analogReads[i]);
-        Serial.print(SEPARATOR);
-    }
-    Serial.println();
-    */
-    
-    
     delay(100);
 
 }
@@ -133,6 +116,12 @@ String toStrAmpere(int adcOut)
     double iOut = vOutRaw/0.015;
     String  strI = doubleToString(iOut, PRECISION);
     return strI;
+}
+
+String toStrBar(int adcOut)
+{
+    String strP = "nan";  // dummy output
+    return strP;
 }
 
 String doubleToString(double number, uint8_t digits) 
