@@ -13,7 +13,7 @@
 #define PRESSURE_ANALOG 2
 
 #define PRECISION 2
-#define V_REF 2.5
+#define V_REF 2.49856
 #define V_RES 0.00488
 #define R_RATIO 0.025
 #define SEPARATOR ";"
@@ -66,7 +66,9 @@ void loop(){
         }
         if ((i > 4) && (i < 6))
         {
-            
+            String current = toStrAmpere(analogReads[i - 4]);
+            String tokenCurrent = "i";
+            measurements.replace(tokenCurrent, current);
         }
         if (i > 5)
         {
@@ -74,10 +76,10 @@ void loop(){
         }
     }
    
-    //Serial.print(measurements + "\n");
-    int current = 513;
-    String strCurrent = toStrAmpere(current);
-    Serial.print(strCurrent + "\n");
+    Serial.print(measurements + "\n");
+    //int current = 513;
+    //String strCurrent = toStrAmpere(current);
+    //Serial.print(strCurrent + "\n");
     
     /*
     // Sending to serial port
