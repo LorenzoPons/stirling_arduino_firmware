@@ -120,7 +120,9 @@ String toStrAmpere(int adcOut)
 
 String toStrBar(int adcOut)
 {
-    String strP = "nan";  // dummy output
+    double pRaw = (adcOut - 100)*V_RES;
+    double pOut = (172.3689 * pRaw) / 4.02;
+    String strP = doubleToString(pOut, PRECISION);  // dummy output
     return strP;
 }
 
